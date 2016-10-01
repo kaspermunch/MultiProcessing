@@ -58,7 +58,7 @@ class Repeats(object):
         
         #num_consumers = multiprocessing.cpu_count()
         self.consumers = [ Consumer(self.tasks, self.results)
-                      for i in xrange(cores) ]
+                      for i in range(cores) ]
 
         for w in self.consumers:
             w.start()
@@ -68,17 +68,17 @@ class Repeats(object):
     def _queue_jobs(self):
     
         # Enqueue jobs
-        for i in xrange(self.num_jobs):
+        for i in range(self.num_jobs):
             self.tasks.put(Task(self.f, *self.args, **self.kwargs))
 
         # Add a poison pill for each consumer
-        for i in xrange(self.cores):
+        for i in range(self.cores):
             self.tasks.put(None)
   
     def __iter__(self):
         return self
 
-    def next(self): # Python 3: def __next__(self)
+    def __next__(self): # Python 3: def __next__(self)
 
         if not self.num_jobs:
             for w in self.consumers:
@@ -118,7 +118,7 @@ class Broadcast(Repeats):
     
     def _queue_jobs(self):
         
-        arg_list = zip(*self.args)
+        arg_list = list(zip(*self.args))
 
         kwarg_list = list()
         for i in range(len(self.kwargs)):
@@ -140,7 +140,7 @@ class Broadcast(Repeats):
             self.tasks.put(Task(self.f, *args, **kwargs))
         
         # Add a poison pill for each consumer
-        for i in xrange(self.cores):
+        for i in range(self.cores):
             self.tasks.put(None)
     
 
@@ -151,14 +151,14 @@ if __name__ == "__main__":
         return number**2 + constant
 
     for s in Broadcast(4, square, [4, 8, 4, 8], [14, 14, 14, 14]):
-        print s
+        print(s)
     print
     for s in Broadcast(1, square, number=[4, 8], constant=[14, 14]):
-        print s
+        print(s)
     print 
     for s in Repeats(1, 4, square, 4, 14):
-        print s
+        print(s)
     print
     for s in Repeats(1, 2, square, number=4, constant=14):
-        print s
+        print(s)
 
