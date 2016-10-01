@@ -7,5 +7,5 @@ setup(name='MultiProcessing',
       description='',
       author='Kasper Munch',
       author_email='kaspermunch@birc.au.dk',
-#      packages=['MultiProcessing'],
+      packages=['MultiProcessing'],
      )
