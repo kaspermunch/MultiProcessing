@@ -90,7 +90,7 @@ class Repeats(object):
                 if type(result) is str and result.startswith('Traceback:'):
                     del self.tasks
                     del self.results
-                    print >>sys.stderr, result
+                    print(result, file=sys.stderr)
                     sys.stderr.flush()
                     os.kill(os.getpid(),9)
                     raise ThreadException
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     def square(number, constant):
         return number**2 + constant
 
-    for s in Broadcast(4, square, [4, 8, 4, 8], [14, 14, 14, 14]):
+    for s in Broadcast(40, square, [4, 8, 4, 8], [14, 14, 14, 14]):
         print(s)
     print
     for s in Broadcast(1, square, number=[4, 8], constant=[14, 14]):
